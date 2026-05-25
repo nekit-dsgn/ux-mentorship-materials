@@ -35,6 +35,7 @@
     const types = [
       { id: "all", label: "Все типы" },
       { id: "video", label: "🎬 Видео / Курсы" },
+      { id: "article", label: "📖 Статьи" },
       { id: "template", label: "🗂 Шаблоны / Фреймворки" },
       { id: "exercise", label: "✏️ Упражнения" },
     ];
@@ -72,6 +73,34 @@
       { id: "5-3", phase: 5, type: "template", title: "Skillsetter — 104 ресурса по UX/UI", desc: "Большая подборка блогов, подкастов, каналов по UX/UI от Skillsetter. Удобно для расширения кругозора перед интервью.", url: "https://skillsetter.io/blog/100-UX", tag: "Подборка" },
       { id: "5-4", phase: 5, type: "exercise", title: "Упражнение: Mock-интервью с ментором", desc: "Симуляция реального дизайн-интервью. Типичные вопросы: расскажи о своём процессе, защити решение, разбери ошибку в кейсе.", url: null, tag: "Практика" },
       { id: "5-5", phase: 5, type: "exercise", title: "Упражнение: Тестовое задание за 48 часов", desc: "Симуляция реального тестового — задача с ограниченным временем, защита перед ментором как перед нанимающим менеджером.", url: null, tag: "Практика" },
+
+      // UPROCK — Фаза 1
+      { id: "u1-1", phase: 1, type: "article", title: "Продуктовое мышление", desc: "Что такое продуктовое мышление в контексте UX/UI-дизайна, почему оно важно, как его развивать и как оно помогает создавать более осмысленные цифровые решения.", url: "https://www.uprock.ru/education/produktovoe-myshlenie", tag: "Uprock" },
+      { id: "u1-2", phase: 1, type: "article", title: "Итеративный подход", desc: "Основные принципы итеративного подхода в дизайне, его преимущества, недостатки и основные этапы. Фундамент для понимания дизайн-процесса.", url: "https://www.uprock.ru/education/iterativnyy-podhod", tag: "Uprock" },
+      { id: "u1-3", phase: 1, type: "article", title: "Принцип замкнутости в дизайне", desc: "Как наш мозг «достраивает» недостающие элементы, зачем это знать дизайнеру и как замкнутость помогает сделать интерфейсы чище и понятнее.", url: "https://www.uprock.ru/education/princip-zamknutosti-v-dizayne", tag: "Uprock" },
+      { id: "u1-4", phase: 1, type: "article", title: "Распространённые ошибки при создании приложений", desc: "Наиболее распространённые ошибки при создании приложений с акцентом на дизайн и пользовательский опыт. Полезно изучить до начала проектирования.", url: "https://www.uprock.ru/education/rasprostranennye-oshibki-pri-sozdanii-prilozheniy", tag: "Uprock" },
+
+      // UPROCK — Фаза 2
+      { id: "u2-1", phase: 2, type: "article", title: "Метод прото-персон", desc: "Чем прото-персоны отличаются от классических, как их создать за пару часов и почему они способны сэкономить десятки часов работы.", url: "https://www.uprock.ru/education/kak-bystro-sozdat-portret-polzovatelya-metod-proto-person", tag: "Uprock" },
+      { id: "u2-2", phase: 2, type: "article", title: "Этнографическое UX-исследование", desc: "Что такое этнографическое исследование, когда и зачем его проводить, какие методы применяются и какие инсайты оно даёт дизайнерам.", url: "https://www.uprock.ru/education/etnograficheskoe-ux-issledovanie", tag: "Uprock" },
+      { id: "u2-3", phase: 2, type: "article", title: "Как научиться слушать (и слышать) пользователя", desc: "Что значит «слушать пользователя» в UX, как развивать эмпатию, задавать правильные вопросы, наблюдать и извлекать из этого максимум пользы.", url: "https://www.uprock.ru/education/kak-ux-ui-dizayneru-nauchitsya-slushat-i-slyshat-polzovatelya", tag: "Uprock" },
+      { id: "u2-4", phase: 2, type: "article", title: "Модель крючка Нира Эяля", desc: "Элементы модели и её применение в цифровых продуктах для повышения вовлечённости. Важный фреймворк для понимания мотивации пользователей.", url: "https://www.uprock.ru/education/model-kryuchka-nira-eyalya", tag: "Uprock" },
+
+      // UPROCK — Фаза 3
+      { id: "u3-1", phase: 3, type: "article", title: "Ошибки в дизайне, которые влияют на конверсию", desc: "Самые частые промахи UX/UI: от медленных сайтов и запутанной навигации до плохих CTA и несогласованного визуала.", url: "https://www.uprock.ru/education/oshibki-v-dizayne-kotorye-vliyayut-na-konversiyu", tag: "Uprock" },
+      { id: "u3-2", phase: 3, type: "article", title: "Как проектировать фидбэк, чтобы пользователь не терялся", desc: "Разные виды фидбэка, где и как их применять и как сделать отклик не просто «для галочки», а действительно полезным.", url: "https://www.uprock.ru/education/kak-proektirovat-fidbek-chtoby-polzovatel-ne-teryalsya", tag: "Uprock" },
+      { id: "u3-3", phase: 3, type: "article", title: "Психология боли: 4 элемента дизайна, которые бесят пользователей", desc: "Четыре раздражающих UX-паттерна: таймеры, автообновление, всплывающие окна и автозапуск — почему они работают против вас.", url: "https://www.uprock.ru/education/psihologiya-boli-4-elementa-dizayna-kotorye-besyat-vashih-polzovateley", tag: "Uprock" },
+      { id: "u3-4", phase: 3, type: "article", title: "Психология боли: ещё 4 элемента (часть 2)", desc: "Ещё четыре UX-паттерна, которые раздражают пользователей: форсированная регистрация, непредсказуемая навигация и ложные загрузки.", url: "https://www.uprock.ru/education/psihologiya-boli-eshche-4-elementa-dizayna-kotorye-besyat-vashih-polzovateley-chast-2", tag: "Uprock" },
+      { id: "u3-5", phase: 3, type: "article", title: "Что такое UX-паттерны и как их применять", desc: "Какие бывают паттерны, как их грамотно использовать, чтобы не терять в оригинальности, и где искать вдохновение.", url: "https://www.uprock.ru/education/chto-takoe-ux-patterny-i-kak-ih-primenyat", tag: "Uprock" },
+
+      // UPROCK — Фаза 4
+      { id: "u4-1", phase: 4, type: "article", title: "Что такое дизайн-система и зачем она продукту", desc: "Что это за система, зачем она нужна продукту, как упрощает жизнь команде и с чего начать, если хочешь освоить работу с ней.", url: "https://www.uprock.ru/education/chto-takoe-dizayn-sistema-i-zachem-ona-produktu", tag: "Uprock" },
+      { id: "u4-2", phase: 4, type: "article", title: "Кнопки: лучшие практики", desc: "«Правильные» кнопки: от написания текста до визуальной иерархии и поведения в разных состояниях. Один из ключевых UI-компонентов.", url: "https://www.uprock.ru/education/knopki-luchshie-praktiki", tag: "Uprock" },
+      { id: "u4-3", phase: 4, type: "article", title: "Минимализм ≠ скука: с чего начать понимание стиля", desc: "Как сделать лаконичный интерфейс выразительным, не уйти в скучную стерильность и какие приёмы помогают оживить минималистичный макет.", url: "https://www.uprock.ru/education/minimalizm-skuka-s-chego-nachat-ponimanie-stilya", tag: "Uprock" },
+      { id: "u4-4", phase: 4, type: "article", title: "Дизайн, который вызывает отклик: эмоциональные триггеры", desc: "Какие визуальные, текстовые и поведенческие детали пробуждают эмоции у пользователей — и как их грамотно использовать.", url: "https://www.uprock.ru/education/delaem-dizayn-kotoryy-vyzyvaet-otklik-emocionalnye-triggery", tag: "Uprock" },
+
+      // UPROCK — Фаза 5
+      { id: "u5-1", phase: 5, type: "article", title: "Почему эмоциональный интеллект важен для дизайнера", desc: "Что такое эмоциональный интеллект, как он влияет на процесс создания дизайна и как его развивать для профессионального роста.", url: "https://www.uprock.ru/education/pochemu-emocionalnyy-intellekt-vazhen-dlya-dizaynera", tag: "Uprock" },
     ];
 
     const phaseColors = {
@@ -82,7 +111,7 @@
       5: { bg: "rgba(239,68,68,0.1)", border: "rgba(239,68,68,0.3)", text: "#FCA5A5", dot: "#EF4444" },
     };
 
-    const typeIcons = { video: "🎬", template: "🗂", exercise: "✏️" };
+    const typeIcons = { video: "🎬", article: "📖", template: "🗂", exercise: "✏️" };
     const phaseLabels = { 1: "Фаза 1", 2: "Фаза 2", 3: "Фаза 3", 4: "Фаза 4", 5: "Фаза 5" };
 
     function App() {
