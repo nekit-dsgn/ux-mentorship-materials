@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>База материалов · UX/UI Mentorship</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0F0F13; color: #E5E7EB; font-family: 'Segoe UI', system-ui, sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+    ::-webkit-scrollbar { width: 6px; } 
+    ::-webkit-scrollbar-track { background: #0F0F13; }
+    ::-webkit-scrollbar-thumb { background: #2D2D3D; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const phases = [
+      { id: "all", label: "Все фазы", color: "#6B7280" },
+      { id: 1, label: "Фаза 1", sub: "Фундамент", color: "#8B5CF6" },
+      { id: 2, label: "Фаза 2", sub: "UX Research", color: "#3B82F6" },
+      { id: 3, label: "Фаза 3", sub: "UX Design", color: "#10B981" },
+      { id: 4, label: "Фаза 4", sub: "UI Design", color: "#F59E0B" },
+      { id: 5, label: "Фаза 5", sub: "Portfolio", color: "#EF4444" },
+    ];
+
+    const types = [
+      { id: "all", label: "Все типы" },
+      { id: "video", label: "🎬 Видео / Курсы" },
+      { id: "template", label: "🗂 Шаблоны / Фреймворки" },
+      { id: "exercise", label: "✏️ Упражнения" },
+    ];
+
+    const materials = [
+      { id: "1-1", phase: 1, type: "video", title: "Alexey Bychkov — YouTube", desc: "Уроки по Figma с нуля, разборы реальных проектов, советы по работе с клиентами. Один из лучших русскоязычных каналов для старта.", url: "https://www.youtube.com/@AlexeyBychkov", tag: "YouTube" },
+      { id: "1-2", phase: 1, type: "video", title: "Skillbox Design — YouTube", desc: "Уроки по UI/UX дизайну, Figma, обзоры от практикующих дизайнеров. Есть плейлисты для начинающих.", url: "https://www.youtube.com/@skillbox", tag: "YouTube" },
+      { id: "1-3", phase: 1, type: "video", title: "Sofya Filippova — YouTube", desc: "Канал с 2016 года — веб-дизайн, UI, карьера дизайнера. Спокойный и понятный формат подачи.", url: "https://www.youtube.com/@SofyaFilippova", tag: "YouTube" },
+      { id: "1-4", phase: 1, type: "template", title: "Double Diamond — шаблон процесса", desc: "Шаблон в FigJam для визуализации дизайн-процесса. Используется как карта навигации на всём периоде обучения.", url: "https://www.figma.com/community/file/1036428588010992401", tag: "FigJam" },
+      { id: "1-5", phase: 1, type: "exercise", title: "Упражнение: разбор 5 продуктов", desc: "Выбрать 5 знакомых приложений и описать каждое через призму пользователя: задача → сценарий → что работает → что нет → почему.", url: null, tag: "Практика" },
+      { id: "1-6", phase: 1, type: "exercise", title: "Упражнение: Figma Speed Copy", desc: "Воспроизведение существующих экранов по скриншоту в Figma. Цель — освоить инструмент, не думая о концепции. 3–5 экранов.", url: null, tag: "Практика" },
+      { id: "2-1", phase: 2, type: "video", title: "UPROCK — UX Research плейлист", desc: "Образовательная платформа с бесплатными видео по UX-исследованиям, интервью и Customer Journey Mapping на русском.", url: "https://www.youtube.com/@UPROCK_design", tag: "YouTube" },
+      { id: "2-2", phase: 2, type: "video", title: "Design Prosmotr — лекции", desc: "Записи ежегодного российского дизайн-форума. Ведущие практикующие дизайнеры разбирают исследования, процессы и кейсы.", url: "https://www.youtube.com/@DesignProsmotr", tag: "YouTube" },
+      { id: "2-3", phase: 2, type: "template", title: "CJM — шаблон Customer Journey Map", desc: "Готовый шаблон для построения карты пути пользователя. Включает этапы, эмоции, точки контакта и инсайты.", url: "https://www.figma.com/community/file/1000552835531484688", tag: "Figma" },
+      { id: "2-4", phase: 2, type: "template", title: "User Persona — шаблон", desc: "Структурированный шаблон для создания персон на основе исследования. Поля: демография, цели, боли, поведение, цитаты.", url: "https://www.figma.com/community/file/881830780480077671", tag: "Figma" },
+      { id: "2-5", phase: 2, type: "template", title: "Affinity Diagram — шаблон синтеза", desc: "Шаблон в FigJam для группировки и синтеза данных из интервью. Незаменим после проведения пользовательских исследований.", url: "https://www.figma.com/community/file/1012819077450038474", tag: "FigJam" },
+      { id: "2-6", phase: 2, type: "template", title: "JTBD, CJM и персоны — разбор на Хабре", desc: "Подробная статья с объяснением фреймворков JTBD, CJM и персон: когда применять каждый, как не перепутать и как использовать вместе.", url: "https://habr.com/ru/articles/731206/", tag: "Статья" },
+      { id: "2-7", phase: 2, type: "template", title: "Контур.Гайды — принципы UX-исследований", desc: "Качественный корпоративный гайд от команды Контура. Охватывает интервью, опросы, юзабилити-тесты с реальными примерами.", url: "https://guides.kontur.ru/principles/user-research/", tag: "Гайд" },
+      { id: "2-8", phase: 2, type: "exercise", title: "Упражнение: 3 пользовательских интервью", desc: "Провести 3 глубинных интервью на тему учебного проекта. Написать гайд, записать разговор, выписать ключевые цитаты.", url: null, tag: "Практика" },
+      { id: "2-9", phase: 2, type: "exercise", title: "Упражнение: HMW из инсайтов", desc: "На основе синтезированных данных сформулировать 5–10 вопросов How Might We. Отсортировать по приоритету с ментором.", url: null, tag: "Практика" },
+      { id: "3-1", phase: 3, type: "video", title: "Uprock — Проектирование интерфейсов", desc: "Серия уроков по IA, user flow, wireframing на русском языке. Практические кейсы с разбором принятых решений.", url: "https://uprock.ru", tag: "Курс" },
+      { id: "3-2", phase: 3, type: "template", title: "User Flow — шаблон", desc: "Шаблон для построения пользовательских сценариев. Включает нотацию: экраны, решения, точки выхода.", url: "https://www.figma.com/community/file/944974887800177301", tag: "Figma" },
+      { id: "3-3", phase: 3, type: "template", title: "10 эвристик Нильсена — чеклист", desc: "Готовый чеклист на русском для проведения экспертного юзабилити-анализа. Каждый принцип с пояснением и примером.", url: "https://habr.com/ru/articles/543106/", tag: "Чеклист" },
+      { id: "3-4", phase: 3, type: "template", title: "Wireframe Kit — Lo-fi компоненты", desc: "Библиотека простых wireframe-компонентов для быстрого прототипирования. Сфокусирована на структуре, не на визуале.", url: "https://www.figma.com/community/file/809483562248762502", tag: "Figma" },
+      { id: "3-5", phase: 3, type: "exercise", title: "Упражнение: Usability Test своего прототипа", desc: "Провести тест с 3 реальными людьми по сценарию. Фиксировать ошибки, записывать реакции, итерировать по результатам.", url: null, tag: "Практика" },
+      { id: "3-6", phase: 3, type: "exercise", title: "Упражнение: Heuristic Review чужого продукта", desc: "Проанализировать чужое приложение по чеклисту Нильсена. Написать отчёт: проблема → нарушенный принцип → предложение.", url: null, tag: "Практика" },
+      { id: "4-1", phase: 4, type: "video", title: "Femida Design — Figma и UI системы", desc: "Разборы дизайн-систем, работа с компонентами, Auto Layout и Variables в Figma. Актуальные техники работы с UI.", url: "https://www.youtube.com/@femida_design", tag: "YouTube" },
+      { id: "4-2", phase: 4, type: "template", title: "UI Kit — базовая дизайн-система", desc: "Стартовый UI Kit с цветами, типографикой, сеткой и базовыми компонентами. Хорошая основа для первой дизайн-системы.", url: "https://www.figma.com/community/file/1271813911103366792", tag: "Figma" },
+      { id: "4-3", phase: 4, type: "template", title: "Дизайн-токены — структура и именование", desc: "Статья на Хабре с объяснением структуры токенов: цвет, типографика, отступы. Практический гайд по именованию переменных.", url: "https://habr.com/ru/articles/764070/", tag: "Статья" },
+      { id: "4-4", phase: 4, type: "template", title: "Handoff-гайд: как передавать дизайн разработчику", desc: "Чеклист для подготовки макетов к передаче: спецификации, именование слоёв, состояния компонентов, edge cases.", url: "https://habr.com/ru/articles/552764/", tag: "Чеклист" },
+      { id: "4-5", phase: 4, type: "exercise", title: "Упражнение: создать мини дизайн-систему", desc: "На основе учебного проекта выстроить библиотеку компонентов: цвета, типографика, кнопки, инпуты, карточки. Минимум 20 компонентов.", url: null, tag: "Практика" },
+      { id: "4-6", phase: 4, type: "exercise", title: "Упражнение: UI Breakdown", desc: "Разобрать экран любимого приложения по сетке, типографике и цветовой системе. Понять логику решений через деконструкцию.", url: null, tag: "Практика" },
+      { id: "5-1", phase: 5, type: "video", title: "Kira Leigh — Portfolio Reviews", desc: "Русскоязычные разборы UX-портфолио: что работает, что нет, как писать кейсы. Практичный взгляд рекрутера и дизайнера.", url: "https://www.youtube.com/@kiraleigh", tag: "YouTube" },
+      { id: "5-2", phase: 5, type: "template", title: "Шаблон кейса для портфолио", desc: "Структура кейса: контекст → проблема → исследование → решение → результат. Готовый шаблон в Notion с подсказками.", url: "https://www.notion.so/templates/ux-case-study", tag: "Notion" },
+      { id: "5-3", phase: 5, type: "template", title: "Skillsetter — 104 ресурса по UX/UI", desc: "Большая подборка блогов, подкастов, каналов по UX/UI от Skillsetter. Удобно для расширения кругозора перед интервью.", url: "https://skillsetter.io/blog/100-UX", tag: "Подборка" },
+      { id: "5-4", phase: 5, type: "exercise", title: "Упражнение: Mock-интервью с ментором", desc: "Симуляция реального дизайн-интервью. Типичные вопросы: расскажи о своём процессе, защити решение, разбери ошибку в кейсе.", url: null, tag: "Практика" },
+      { id: "5-5", phase: 5, type: "exercise", title: "Упражнение: Тестовое задание за 48 часов", desc: "Симуляция реального тестового — задача с ограниченным временем, защита перед ментором как перед нанимающим менеджером.", url: null, tag: "Практика" },
+    ];
+
+    const phaseColors = {
+      1: { bg: "rgba(139,92,246,0.1)", border: "rgba(139,92,246,0.3)", text: "#A78BFA", dot: "#8B5CF6" },
+      2: { bg: "rgba(59,130,246,0.1)", border: "rgba(59,130,246,0.3)", text: "#60A5FA", dot: "#3B82F6" },
+      3: { bg: "rgba(16,185,129,0.1)", border: "rgba(16,185,129,0.3)", text: "#34D399", dot: "#10B981" },
+      4: { bg: "rgba(245,158,11,0.1)", border: "rgba(245,158,11,0.3)", text: "#FCD34D", dot: "#F59E0B" },
+      5: { bg: "rgba(239,68,68,0.1)", border: "rgba(239,68,68,0.3)", text: "#FCA5A5", dot: "#EF4444" },
+    };
+
+    const typeIcons = { video: "🎬", template: "🗂", exercise: "✏️" };
+    const phaseLabels = { 1: "Фаза 1", 2: "Фаза 2", 3: "Фаза 3", 4: "Фаза 4", 5: "Фаза 5" };
+
+    function App() {
+      const [activePhase, setActivePhase] = useState("all");
+      const [activeType, setActiveType] = useState("all");
+      const [done, setDone] = useState(() => {
+        try { return JSON.parse(localStorage.getItem("mentorship-done") || "{}"); } catch { return {}; }
+      });
+      const [saved, setSaved] = useState(() => {
+        try { return JSON.parse(localStorage.getItem("mentorship-saved") || "{}"); } catch { return {}; }
+      });
+      const [view, setView] = useState("grid");
+
+      const toggleDone = (id) => {
+        const next = { ...done, [id]: !done[id] };
+        setDone(next);
+        localStorage.setItem("mentorship-done", JSON.stringify(next));
+      };
+
+      const toggleSaved = (id) => {
+        const next = { ...saved, [id]: !saved[id] };
+        setSaved(next);
+        localStorage.setItem("mentorship-saved", JSON.stringify(next));
+      };
+
+      const filtered = materials.filter(m => {
+        const phaseMatch = activePhase === "all" || m.phase === activePhase;
+        const typeMatch = activeType === "all" || m.type === activeType;
+        return phaseMatch && typeMatch;
+      });
+
+      const totalDone = Object.values(done).filter(Boolean).length;
+      const progress = Math.round((totalDone / materials.length) * 100);
+
+      const phaseProgress = [1,2,3,4,5].map(p => {
+        const pMats = materials.filter(m => m.phase === p);
+        const pDone = pMats.filter(m => done[m.id]).length;
+        return { phase: p, total: pMats.length, done: pDone };
+      });
+
+      return (
+        <div style={{ minHeight: "100vh", background: "#0F0F13", color: "#E5E7EB" }}>
+          {/* Header */}
+          <div style={{ background: "linear-gradient(180deg,#1A1A24 0%,#0F0F13 100%)", borderBottom: "1px solid #1F1F2E", padding: "28px 32px 24px" }}>
+            <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16 }}>
+                <div>
+                  <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "#6B7280", marginBottom: 6 }}>Программа менторства · UX/UI Designer</div>
+                  <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700, color: "#F9FAFB", letterSpacing: "-0.02em" }}>База материалов</h1>
+                </div>
+                <div style={{ display: "flex", gap: 12 }}>
+                  <div style={{ background: "#1A1A24", border: "1px solid #2D2D3D", borderRadius: 10, padding: "10px 16px", textAlign: "center" }}>
+                    <div style={{ fontSize: 22, fontWeight: 700, color: "#A78BFA", lineHeight: 1 }}>{totalDone}</div>
+                    <div style={{ fontSize: 11, color: "#6B7280", marginTop: 2 }}>изучено</div>
+                  </div>
+                  <div style={{ background: "#1A1A24", border: "1px solid #2D2D3D", borderRadius: 10, padding: "10px 16px", textAlign: "center" }}>
+                    <div style={{ fontSize: 22, fontWeight: 700, color: "#34D399", lineHeight: 1 }}>{progress}%</div>
+                    <div style={{ fontSize: 11, color: "#6B7280", marginTop: 2 }}>прогресс</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", gap: 8, marginTop: 20, flexWrap: "wrap" }}>
+                {phaseProgress.map(p => {
+                  const c = phaseColors[p.phase];
+                  const pct = Math.round((p.done / p.total) * 100);
+                  return (
+                    <div key={p.phase} style={{ flex: "1 1 140px", background: "#1A1A24", border: `1px solid ${c.border}`, borderRadius: 8, padding: "8px 12px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
+                        <span style={{ fontSize: 11, color: c.text, fontWeight: 600 }}>{phaseLabels[p.phase]}</span>
+                        <span style={{ fontSize: 11, color: "#6B7280" }}>{p.done}/{p.total}</span>
+                      </div>
+                      <div style={{ height: 3, background: "#2D2D3D", borderRadius: 2 }}>
+                        <div style={{ height: "100%", width: `${pct}%`, background: c.dot, borderRadius: 2, transition: "width 0.3s" }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Filters */}
+          <div style={{ position: "sticky", top: 0, zIndex: 10, background: "#0F0F13", borderBottom: "1px solid #1F1F2E", padding: "14px 32px" }}>
+            <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 20, flexWrap: "wrap", alignItems: "center" }}>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {phases.map(p => (
+                  <button key={p.id} onClick={() => setActivePhase(p.id)} style={{
+                    padding: "5px 12px", borderRadius: 6, border: "1px solid",
+                    borderColor: activePhase === p.id ? p.color : "#2D2D3D",
+                    background: activePhase === p.id ? `${p.color}20` : "transparent",
+                    color: activePhase === p.id ? "#F9FAFB" : "#9CA3AF",
+                    fontSize: 12, fontWeight: 500, whiteSpace: "nowrap",
+                  }}>
+                    {p.label}{p.sub ? ` · ${p.sub}` : ""}
+                  </button>
+                ))}
+              </div>
+              <div style={{ width: 1, height: 20, background: "#2D2D3D" }} />
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {types.map(t => (
+                  <button key={t.id} onClick={() => setActiveType(t.id)} style={{
+                    padding: "5px 12px", borderRadius: 6, border: "1px solid",
+                    borderColor: activeType === t.id ? "#6B7280" : "#2D2D3D",
+                    background: activeType === t.id ? "#1F1F2E" : "transparent",
+                    color: activeType === t.id ? "#F9FAFB" : "#9CA3AF",
+                    fontSize: 12, fontWeight: 500, whiteSpace: "nowrap",
+                  }}>
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+              <div style={{ marginLeft: "auto", display: "flex", gap: 4 }}>
+                {["grid", "list"].map(v => (
+                  <button key={v} onClick={() => setView(v)} style={{
+                    padding: "5px 10px", borderRadius: 6, border: "1px solid #2D2D3D",
+                    background: view === v ? "#1F1F2E" : "transparent",
+                    color: view === v ? "#F9FAFB" : "#6B7280", fontSize: 13,
+                  }}>
+                    {v === "grid" ? "⊞" : "☰"}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Cards */}
+          <div style={{ maxWidth: 1100, margin: "0 auto", padding: "24px 32px 48px" }}>
+            <div style={{ fontSize: 12, color: "#6B7280", marginBottom: 16 }}>
+              {filtered.length} материал{filtered.length === 1 ? "" : filtered.length < 5 ? "а" : "ов"}
+            </div>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: view === "grid" ? "repeat(auto-fill, minmax(300px, 1fr))" : "1fr",
+              gap: view === "grid" ? 14 : 8,
+            }}>
+              {filtered.map(m => {
+                const c = phaseColors[m.phase];
+                const isDone = done[m.id];
+                const isSaved = saved[m.id];
+                return (
+                  <div key={m.id} style={{
+                    background: isDone ? "rgba(255,255,255,0.02)" : "#1A1A24",
+                    border: `1px solid ${isDone ? "#2D2D3D" : c.border}`,
+                    borderRadius: 12, padding: view === "grid" ? "16px" : "12px 16px",
+                    display: "flex", flexDirection: view === "grid" ? "column" : "row",
+                    gap: view === "grid" ? 12 : 16,
+                    alignItems: view === "list" ? "center" : "stretch",
+                    opacity: isDone ? 0.55 : 1, position: "relative", overflow: "hidden",
+                  }}>
+                    {isDone && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "#374151" }} />}
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+                      <div style={{ width: 8, height: 8, borderRadius: "50%", background: c.dot, flexShrink: 0 }} />
+                      <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: c.text }}>{phaseLabels[m.phase]}</span>
+                      <span style={{ fontSize: 10, background: "#252535", color: "#9CA3AF", padding: "2px 6px", borderRadius: 4 }}>{typeIcons[m.type]} {m.tag}</span>
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 14, fontWeight: 600, color: isDone ? "#6B7280" : "#F3F4F6", marginBottom: view === "grid" ? 6 : 2, textDecoration: isDone ? "line-through" : "none" }}>{m.title}</div>
+                      {view === "grid" && <div style={{ fontSize: 12, color: "#9CA3AF", lineHeight: 1.55 }}>{m.desc}</div>}
+                    </div>
+                    <div style={{ display: "flex", gap: 6, alignItems: "center", flexShrink: 0, marginTop: view === "grid" ? "auto" : 0 }}>
+                      {m.url && (
+                        <a href={m.url} target="_blank" rel="noopener noreferrer" style={{
+                          padding: "5px 10px", borderRadius: 6, background: "#252535", border: "1px solid #2D2D3D",
+                          color: "#9CA3AF", fontSize: 11, whiteSpace: "nowrap",
+                        }}>Открыть →</a>
+                      )}
+                      <button onClick={() => toggleSaved(m.id)} style={{
+                        padding: "5px 8px", borderRadius: 6,
+                        background: isSaved ? "rgba(245,158,11,0.15)" : "#252535",
+                        border: `1px solid ${isSaved ? "rgba(245,158,11,0.4)" : "#2D2D3D"}`,
+                        color: isSaved ? "#FCD34D" : "#6B7280", fontSize: 13,
+                      }}>{isSaved ? "★" : "☆"}</button>
+                      <button onClick={() => toggleDone(m.id)} style={{
+                        padding: "5px 8px", borderRadius: 6,
+                        background: isDone ? "rgba(16,185,129,0.15)" : "#252535",
+                        border: `1px solid ${isDone ? "rgba(16,185,129,0.4)" : "#2D2D3D"}`,
+                        color: isDone ? "#34D399" : "#6B7280", fontSize: 13,
+                      }}>{isDone ? "✓" : "○"}</button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {filtered.length === 0 && (
+              <div style={{ textAlign: "center", padding: "60px 0", color: "#4B5563" }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>🔍</div>
+                <div>Нет материалов для выбранных фильтров</div>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
